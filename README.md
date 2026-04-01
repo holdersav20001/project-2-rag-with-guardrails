@@ -80,9 +80,9 @@ graph TB
     CONF --> UI
     CHUNKS <-->|search| VEC
     SESSION <-->|history| HIST
-    AUDIT <-- INJ
-    AUDIT <-- TOPIC
-    AUDIT <-- PII_IN
+    INJ -->|log| AUDIT
+    TOPIC -->|log| AUDIT
+    PII_IN -->|log| AUDIT
     DOCS -->|ingest| CHUNKS
 ```
 
