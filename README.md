@@ -15,45 +15,45 @@ Users upload compliance documents (PDF, TXT, MD). They can then ask questions ab
 ```mermaid
 graph TB
     subgraph Frontend["Frontend (React/Vite · port 3000)"]
-        UI[Document Manager + Chat UI]
+        UI["Document Manager + Chat UI"]
     end
 
     subgraph API["FastAPI (port 8000)"]
-        AUTH[API Key Auth]
-        DOCS[/api/documents]
-        QUERY[/api/query]
-        EVAL[/api/evaluations]
+        AUTH["API Key Auth"]
+        DOCS["GET /api/documents"]
+        QUERY["POST /api/query"]
+        EVAL["POST /api/evaluations"]
     end
 
     subgraph Guardrails_In["Input Guardrails"]
-        INJ[Injection Detector<br/>regex on normalised text]
-        TOPIC[Topic Classifier<br/>embedding cosine vs centroid]
-        PII_IN[PII Detector<br/>Presidio NER]
+        INJ["Injection Detector<br/>(regex)"]
+        TOPIC["Topic Classifier<br/>(embedding)"]
+        PII_IN["PII Detector<br/>(Presidio)"]
     end
 
     subgraph Retrieval["Retrieval"]
-        EMBED[Embed query<br/>sentence-transformers]
-        VEC[pgvector cosine search<br/>top 10]
-        RERANK[Cross-encoder re-rank<br/>top 5]
-        ROUTER[Query Router<br/>semantic / structured / hybrid]
-        SQL[Structured Handler<br/>natural language → SQL]
+        ROUTER["Query Router<br/>(semantic/structured/hybrid)"]
+        EMBED["Embed Query<br/>(sentence-transformers)"]
+        VEC["pgvector Search<br/>(top 10)"]
+        RERANK["Cross-Encoder<br/>(top 5)"]
+        SQL["SQL Handler<br/>(NL → SQL)"]
     end
 
     subgraph LLM["LLM Generation"]
-        HIST[Load session history]
-        GEN[OpenRouter API<br/>with retry/backoff]
+        HIST["Load Session History"]
+        GEN["OpenRouter API<br/>(with retry)"]
     end
 
     subgraph Guardrails_Out["Output Guardrails"]
-        GROUND[Grounding Check<br/>token overlap → NLI DeBERTa]
-        PII_OUT[PII Redaction<br/>Presidio]
-        CONF[Confidence Score]
+        GROUND["Grounding Check<br/>(token overlap + NLI)"]
+        PII_OUT["PII Redaction<br/>(Presidio)"]
+        CONF["Confidence Score"]
     end
 
     subgraph Storage["PostgreSQL + pgvector"]
-        CHUNKS[(document_chunks)]
-        SESSION[(session_history)]
-        AUDIT[(audit_log)]
+        CHUNKS["(document_chunks)"]
+        SESSION["(session_history)"]
+        AUDIT["(audit_log)"]
     end
 
     UI -->|REST| AUTH
@@ -78,8 +78,8 @@ graph TB
     GROUND --> PII_OUT
     PII_OUT --> CONF
     CONF --> UI
-    CHUNKS <-->|store / search| VEC
-    SESSION <-->|load / save| HIST
+    CHUNKS <-->|search| VEC
+    SESSION <-->|history| HIST
     AUDIT <-- INJ
     AUDIT <-- TOPIC
     AUDIT <-- PII_IN
