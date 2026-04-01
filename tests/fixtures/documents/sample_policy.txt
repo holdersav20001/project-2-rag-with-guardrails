@@ -1,0 +1,33 @@
+COMPANY POLICY DOCUMENT — SAMPLE
+Version 1.0 | January 2025
+
+REFUND POLICY
+Customers may request a refund within 30 days of purchase. Refunds are processed within
+5-7 business days of the approved request. Digital products are non-refundable once
+downloaded. To initiate a refund, contact support@example.com with your order number.
+
+PASSWORD RESET
+To reset your password, navigate to the login page and click the "Forgot password" link.
+Enter your registered email address. A password reset link will be sent within 5 minutes.
+The link expires after 24 hours. If you do not receive the email, check your spam folder
+or contact support.
+
+DATA RETENTION
+Per our compliance requirements, all customer data is retained for a minimum of 7 years
+from the date of last activity. After this period, data is securely deleted using
+industry-standard data destruction methods. Users may request early deletion of their
+personal data by submitting a data deletion request form.
+
+PAYMENT METHODS
+We accept the following payment methods: Visa, Mastercard, American Express, and PayPal.
+All transactions are processed securely via our PCI-DSS compliant payment gateway.
+We do not store card numbers on our servers. Bank transfers are available for orders
+over $10,000.
+
+CUSTOMER SUPPORT
+Our support team is available 24 hours a day, 7 days a week, 365 days a year.
+You can reach us via:
+- Live chat: Available on our website homepage
+- Email: support@example.com
+- Phone: 1-800-EXAMPLE (Mon-Fri, 9am-6pm EST)
+Average response time for email is under 4 hours.

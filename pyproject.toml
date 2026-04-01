@@ -1,0 +1,144 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "rag-guardrails"
+version = "0.1.0"
+requires-python = ">=3.12"
+dependencies = [
+    # Web framework
+    "fastapi>=0.115.0,<1.0.0",
+    "uvicorn[standard]>=0.32.0,<1.0.0",
+    "python-multipart>=0.0.12",
+
+    # Database
+    "sqlalchemy[asyncio]>=2.0.0,<3.0.0",
+    "alembic>=1.14.0,<2.0.0",
+    "asyncpg>=0.29.0,<1.0.0",
+    "pgvector>=0.3.0,<1.0.0",
+
+    # Settings & validation
+    "pydantic>=2.10.0,<3.0.0",
+    "pydantic-settings>=2.6.0,<3.0.0",
+
+    # LlamaIndex — vector-stores-postgres and llms-anthropic dropped (ecosystem
+    # conflicts). Vector storage uses pgvector directly; LLM via OpenRouter.
+    "llama-index-core>=0.12.5,<0.13.0",
+    "llama-index-embeddings-huggingface~=0.4.0",
+    "llama-index-readers-file~=0.4.0",
+
+    # Embeddings & ML models
+    "sentence-transformers~=3.3.0",
+    "torch>=2.5.0",
+    "transformers>=4.47.0",
+
+    # LLM client — OpenAI-compatible SDK used for OpenRouter
+    "openai>=1.50.0,<2.0.0",
+
+    # Retry & resilience
+    "tenacity>=9.0.0,<10.0.0",
+
+    # Guardrails — PII
+    "presidio-analyzer>=2.2.0,<3.0.0",
+    "presidio-anonymizer>=2.2.0,<3.0.0",
+    "spacy>=3.8.0,<4.0.0",
+
+    # Document parsing
+    "unstructured[pdf]>=0.16.0",
+    "pymupdf>=1.25.0",
+
+    # Rate limiting
+    "slowapi>=0.1.9,<1.0.0",
+
+    # Observability
+    "structlog>=24.4.0,<25.0.0",
+    "opentelemetry-sdk>=1.29.0,<2.0.0",
+    "opentelemetry-api>=1.29.0,<2.0.0",
+    "opentelemetry-instrumentation-fastapi>=0.50b0",
+    "opentelemetry-instrumentation-sqlalchemy>=0.50b0",
+    "opentelemetry-exporter-otlp>=1.29.0,<2.0.0",
+    "prometheus-client>=0.21.0,<1.0.0",
+    "prometheus-fastapi-instrumentator>=7.0.0,<8.0.0",
+
+    # Evaluation — runtime, not dev-only (POST /evaluations is a live endpoint)
+    "ragas~=0.2.0",
+    "datasets>=3.2.0",
+
+    # Utilities
+    "httpx>=0.28.0,<1.0.0",
+    "python-dotenv>=1.0.0,<2.0.0",
+    "numpy>=1.26.0,<3.0.0",
+    "aiofiles>=24.1.0,<25.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    # Testing
+    "pytest>=8.3.0",
+    "pytest-asyncio>=0.24.0",
+    "pytest-cov>=6.0.0",
+    "pytest-mock>=3.14.0",
+    "httpx>=0.28.0",
+    "testcontainers[postgres]>=4.8.0",
+    "factory-boy>=3.3.0",
+
+    # Linting & formatting
+    "ruff>=0.8.0",
+    "mypy>=1.13.0",
+
+    # Security scanning
+    "bandit[toml]>=1.8.0",
+
+    # Frontend type generation
+    "openapi-python-client>=0.21.0",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/rag_guardrails"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = [
+    "--strict-markers",
+    "--tb=short",
+    "--cov=src/rag_guardrails",
+    "--cov-report=term-missing",
+    "--cov-report=xml:coverage.xml",
+    "--cov-fail-under=85",
+]
+markers = [
+    "unit: fast tests with no external dependencies",
+    "integration: tests requiring PostgreSQL (testcontainers)",
+    "e2e: tests requiring full Docker Compose stack",
+    "slow: tests that take >5s",
+    "guardrail: tests for guardrail modules (coverage target 95%)",
+    "adversarial: adversarial attack tests from the attack matrix",
+]
+
+[tool.coverage.run]
+source = ["src/rag_guardrails"]
+omit = ["*/migrations/*", "*/alembic/*"]
+
+[tool.coverage.report]
+fail_under = 85
+exclude_lines = [
+    "pragma: no cover",
+    "if TYPE_CHECKING:",
+    "raise NotImplementedError",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "N", "UP", "B", "S", "ANN"]
+ignore = ["ANN101", "ANN102", "S101"]  # S101: allow assert in tests
+
+[tool.bandit]
+targets = ["src"]
+skips = ["B101"]  # allow assert in non-test src only in tests

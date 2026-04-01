@@ -1,0 +1,27 @@
+[
+  {
+    "question": "What is the refund policy?",
+    "ground_truth": "Refunds are processed within 5-7 business days of the approved request.",
+    "context": "Our refund policy allows customers to request a refund within 30 days of purchase. Refunds are processed within 5-7 business days of the approved request."
+  },
+  {
+    "question": "How do I reset my password?",
+    "ground_truth": "Click Forgot password on the login page and follow the email instructions.",
+    "context": "To reset your password, click the Forgot password link on the login page. You will receive an email with instructions to create a new password."
+  },
+  {
+    "question": "What are the data retention policies?",
+    "ground_truth": "Data is retained for 7 years per compliance requirements.",
+    "context": "Per our compliance requirements, customer data is retained for a minimum of 7 years. After this period, data is securely deleted."
+  },
+  {
+    "question": "What payment methods are accepted?",
+    "ground_truth": "We accept Visa, Mastercard, and PayPal.",
+    "context": "We accept the following payment methods: Visa, Mastercard, American Express, and PayPal. All transactions are processed securely."
+  },
+  {
+    "question": "How do I contact support?",
+    "ground_truth": "Support is available 24/7 via live chat and email at support@example.com.",
+    "context": "Our support team is available 24 hours a day, 7 days a week. You can reach us via live chat on our website or by emailing support@example.com."
+  }
+]

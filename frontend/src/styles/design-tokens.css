@@ -1,0 +1,260 @@
+/* ==========================================================================
+   RAG with Guardrails -- Design Token System
+   ==========================================================================
+   A complete design token layer for the RAG chat interface.
+   All component styles reference these tokens so that theming, dark mode,
+   and future brand changes require edits in only one place.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. COLOR TOKENS -- Light Theme (default)
+   -------------------------------------------------------------------------- */
+:root {
+  /* --- Brand / Primary --- */
+  --color-primary-50:  #eef4ff;
+  --color-primary-100: #d9e6ff;
+  --color-primary-200: #bcd4fe;
+  --color-primary-300: #8ebafd;
+  --color-primary-400: #5996fa;
+  --color-primary-500: #3371f7;   /* main interactive accent           */
+  --color-primary-600: #1d53ec;
+  --color-primary-700: #1640d9;
+  --color-primary-800: #1835b0;
+  --color-primary-900: #19318b;
+
+  /* --- Secondary / Slate --- */
+  --color-secondary-50:  #f8fafc;
+  --color-secondary-100: #f1f5f9;
+  --color-secondary-200: #e2e8f0;
+  --color-secondary-300: #cbd5e1;
+  --color-secondary-400: #94a3b8;
+  --color-secondary-500: #64748b;
+  --color-secondary-600: #475569;
+  --color-secondary-700: #334155;
+  --color-secondary-800: #1e293b;
+  --color-secondary-900: #0f172a;
+
+  /* --- Semantic: Confidence Levels --- */
+  --color-confidence-high:       #10b981;  /* emerald-500  */
+  --color-confidence-high-bg:    #ecfdf5;  /* emerald-50   */
+  --color-confidence-medium:     #f59e0b;  /* amber-500    */
+  --color-confidence-medium-bg:  #fffbeb;  /* amber-50     */
+  --color-confidence-low:        #ef4444;  /* red-500      */
+  --color-confidence-low-bg:     #fef2f2;  /* red-50       */
+
+  /* --- Semantic: System feedback --- */
+  --color-success-500: #10b981;
+  --color-success-50:  #ecfdf5;
+  --color-warning-500: #f59e0b;
+  --color-warning-50:  #fffbeb;
+  --color-error-500:   #ef4444;
+  --color-error-50:    #fef2f2;
+  --color-info-500:    #3b82f6;
+  --color-info-50:     #eff6ff;
+
+  /* --- Surface / Background --- */
+  --color-bg-primary:    #ffffff;
+  --color-bg-secondary:  #f8fafc;
+  --color-bg-tertiary:   #f1f5f9;
+  --color-bg-chat:       #f8fafc;
+  --color-bg-user-msg:   var(--color-primary-500);
+  --color-bg-ai-msg:     #ffffff;
+  --color-bg-blocked:    #fef2f2;
+  --color-bg-overlay:    rgb(15 23 42 / 0.4);
+
+  /* --- Text --- */
+  --color-text-primary:   #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-tertiary:  #94a3b8;
+  --color-text-inverse:   #ffffff;
+  --color-text-link:      var(--color-primary-600);
+  --color-text-on-primary: #ffffff;
+
+  /* --- Borders --- */
+  --color-border-default:  #e2e8f0;
+  --color-border-hover:    #cbd5e1;
+  --color-border-focus:    var(--color-primary-400);
+  --color-border-error:    var(--color-error-500);
+
+  /* --------------------------------------------------------------------------
+     2. TYPOGRAPHY TOKENS
+     -------------------------------------------------------------------------- */
+  --font-sans:  'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono:  'JetBrains Mono', 'Fira Code', ui-monospace, monospace;
+
+  /* Scale -- minor third (1.2) rounded to whole px */
+  --text-xs:   0.75rem;     /* 12px */
+  --text-sm:   0.8125rem;   /* 13px */
+  --text-base: 0.875rem;    /* 14px -- body default for dense UI */
+  --text-md:   1rem;        /* 16px */
+  --text-lg:   1.125rem;    /* 18px */
+  --text-xl:   1.25rem;     /* 20px */
+  --text-2xl:  1.5rem;      /* 24px */
+  --text-3xl:  1.875rem;    /* 30px */
+
+  --leading-tight:  1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+
+  --weight-regular:  400;
+  --weight-medium:   500;
+  --weight-semibold: 600;
+  --weight-bold:     700;
+
+  /* --------------------------------------------------------------------------
+     3. SPACING TOKENS (4px base grid)
+     -------------------------------------------------------------------------- */
+  --space-0:  0;
+  --space-px: 1px;
+  --space-0-5: 0.125rem;  /*  2px */
+  --space-1:   0.25rem;   /*  4px */
+  --space-1-5: 0.375rem;  /*  6px */
+  --space-2:   0.5rem;    /*  8px */
+  --space-3:   0.75rem;   /* 12px */
+  --space-4:   1rem;      /* 16px */
+  --space-5:   1.25rem;   /* 20px */
+  --space-6:   1.5rem;    /* 24px */
+  --space-8:   2rem;      /* 32px */
+  --space-10:  2.5rem;    /* 40px */
+  --space-12:  3rem;      /* 48px */
+  --space-16:  4rem;      /* 64px */
+
+  /* --------------------------------------------------------------------------
+     4. BORDER RADIUS
+     -------------------------------------------------------------------------- */
+  --radius-sm:   0.25rem;   /*  4px */
+  --radius-md:   0.375rem;  /*  6px */
+  --radius-lg:   0.5rem;    /*  8px */
+  --radius-xl:   0.75rem;   /* 12px */
+  --radius-2xl:  1rem;      /* 16px */
+  --radius-full: 9999px;
+
+  /* --------------------------------------------------------------------------
+     5. SHADOWS
+     -------------------------------------------------------------------------- */
+  --shadow-xs:  0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm:  0 1px 3px 0 rgb(0 0 0 / 0.08), 0 1px 2px -1px rgb(0 0 0 / 0.08);
+  --shadow-md:  0 4px 6px -1px rgb(0 0 0 / 0.08), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+  --shadow-lg:  0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.06);
+  --shadow-xl:  0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.06);
+  --shadow-focus-ring: 0 0 0 3px rgb(51 113 247 / 0.25);
+
+  /* --------------------------------------------------------------------------
+     6. TRANSITIONS
+     -------------------------------------------------------------------------- */
+  --duration-fast:    100ms;
+  --duration-normal:  200ms;
+  --duration-slow:    350ms;
+  --ease-out:         cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out:      cubic-bezier(0.45, 0, 0.55, 1);
+  --ease-spring:      cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --------------------------------------------------------------------------
+     7. Z-INDEX SCALE
+     -------------------------------------------------------------------------- */
+  --z-base:      0;
+  --z-dropdown:  10;
+  --z-sticky:    20;
+  --z-overlay:   30;
+  --z-modal:     40;
+  --z-toast:     50;
+
+  /* --------------------------------------------------------------------------
+     8. LAYOUT
+     -------------------------------------------------------------------------- */
+  --header-height:   3.5rem;    /* 56px */
+  --sidebar-width:   22rem;     /* 352px -- citation panel */
+  --input-bar-height: 4.5rem;   /* 72px */
+  --max-chat-width:  48rem;     /* 768px */
+  --max-content-width: 80rem;   /* 1280px */
+}
+
+/* --------------------------------------------------------------------------
+   9. DARK MODE TOKENS
+   --------------------------------------------------------------------------
+   Applied when <html data-theme="dark"> or via prefers-color-scheme.
+   Only overrides that differ from light are listed.
+   -------------------------------------------------------------------------- */
+[data-theme="dark"] {
+  /* Brand / Primary -- brighter for dark backgrounds */
+  --color-primary-50:  #172554;
+  --color-primary-100: #1e3a8a;
+  --color-primary-200: #1d4ed8;
+  --color-primary-300: #3b82f6;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #7db4fc;
+  --color-primary-600: #93c5fd;
+  --color-primary-700: #bfdbfe;
+  --color-primary-800: #dbeafe;
+  --color-primary-900: #eff6ff;
+
+  /* Secondary / Slate -- inverted */
+  --color-secondary-50:  #0f172a;
+  --color-secondary-100: #1e293b;
+  --color-secondary-200: #334155;
+  --color-secondary-300: #475569;
+  --color-secondary-400: #64748b;
+  --color-secondary-500: #94a3b8;
+  --color-secondary-600: #cbd5e1;
+  --color-secondary-700: #e2e8f0;
+  --color-secondary-800: #f1f5f9;
+  --color-secondary-900: #f8fafc;
+
+  /* Semantic confidence -- keep hue, reduce saturation for dark bg */
+  --color-confidence-high:      #34d399;
+  --color-confidence-high-bg:   rgb(16 185 129 / 0.12);
+  --color-confidence-medium:    #fbbf24;
+  --color-confidence-medium-bg: rgb(245 158 11 / 0.12);
+  --color-confidence-low:       #f87171;
+  --color-confidence-low-bg:    rgb(239 68 68 / 0.12);
+
+  /* Semantic feedback */
+  --color-success-500: #34d399;
+  --color-success-50:  rgb(16 185 129 / 0.12);
+  --color-warning-500: #fbbf24;
+  --color-warning-50:  rgb(245 158 11 / 0.12);
+  --color-error-500:   #f87171;
+  --color-error-50:    rgb(239 68 68 / 0.12);
+  --color-info-500:    #60a5fa;
+  --color-info-50:     rgb(59 130 246 / 0.12);
+
+  /* Surfaces */
+  --color-bg-primary:    #0f172a;
+  --color-bg-secondary:  #1e293b;
+  --color-bg-tertiary:   #334155;
+  --color-bg-chat:       #0f172a;
+  --color-bg-user-msg:   var(--color-primary-500);
+  --color-bg-ai-msg:     #1e293b;
+  --color-bg-blocked:    rgb(239 68 68 / 0.10);
+  --color-bg-overlay:    rgb(0 0 0 / 0.6);
+
+  /* Text */
+  --color-text-primary:   #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-text-tertiary:  #64748b;
+  --color-text-inverse:   #0f172a;
+  --color-text-link:      var(--color-primary-400);
+  --color-text-on-primary: #0f172a;
+
+  /* Borders */
+  --color-border-default: #334155;
+  --color-border-hover:   #475569;
+  --color-border-focus:   var(--color-primary-400);
+
+  /* Shadows -- subtle in dark mode */
+  --shadow-xs:  0 1px 2px 0 rgb(0 0 0 / 0.2);
+  --shadow-sm:  0 1px 3px 0 rgb(0 0 0 / 0.3), 0 1px 2px -1px rgb(0 0 0 / 0.3);
+  --shadow-md:  0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.25);
+  --shadow-lg:  0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.25);
+  --shadow-xl:  0 20px 25px -5px rgb(0 0 0 / 0.4), 0 8px 10px -6px rgb(0 0 0 / 0.3);
+  --shadow-focus-ring: 0 0 0 3px rgb(125 180 252 / 0.35);
+}
+
+/* Auto dark mode if user hasn't explicitly toggled */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* Inherit all dark overrides -- duplicated via :root[data-theme="dark"].
+       In production you would use a CSS-in-JS or PostCSS plugin to avoid
+       the duplication. Keeping both selectors here for clarity. */
+  }
+}

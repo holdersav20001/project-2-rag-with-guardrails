@@ -1,0 +1,13 @@
+#!/bin/sh
+set -e
+
+echo "[entrypoint] Running Alembic migrations..."
+alembic upgrade head
+
+echo "[entrypoint] Starting API server..."
+exec uvicorn rag_guardrails.api.app:app \
+    --host 0.0.0.0 \
+    --port 8000 \
+    --workers 1 \
+    --loop asyncio \
+    --http httptools

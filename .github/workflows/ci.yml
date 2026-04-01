@@ -1,0 +1,128 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint & Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install ruff bandit[toml]
+      - run: ruff check src/ tests/
+      - run: bandit -r src/ -c pyproject.toml
+
+  unit:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - run: python -m spacy download en_core_web_lg
+      - run: pytest tests/unit/ -m "not e2e and not integration"
+             --cov=src/rag_guardrails
+             --cov-report=xml
+             --cov-fail-under=85
+        env:
+          API_KEY: test-key
+          ANTHROPIC_API_KEY: sk-ant-test-00000000000
+          DATABASE_URL: postgresql+asyncpg://skip:skip@localhost:5432/skip
+      - uses: codecov/codecov-action@v4
+        with:
+          file: coverage.xml
+
+  integration:
+    name: Integration Tests
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: pgvector/pgvector:pg17
+        env:
+          POSTGRES_USER: ragtest
+          POSTGRES_PASSWORD: ragtest
+          POSTGRES_DB: rag_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+        ports:
+          - 5433:5432
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -e ".[dev]"
+      - run: python -m spacy download en_core_web_lg
+      - run: pytest tests/integration/ -m integration
+        env:
+          API_KEY: test-key
+          ANTHROPIC_API_KEY: sk-ant-test-00000000000
+          DATABASE_URL: postgresql+asyncpg://ragtest:ragtest@localhost:5433/rag_test
+
+  e2e:
+    name: E2E Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install pytest httpx
+      - name: Start test stack
+        run: docker compose -f docker-compose.test.yml up -d
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      - name: Wait for API health
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:8001/api/health && break
+            sleep 3
+          done
+      - run: pytest tests/e2e/ -m e2e
+      - name: Tear down
+        if: always()
+        run: docker compose -f docker-compose.test.yml down -v
+
+  build:
+    name: Docker Build
+    runs-on: ubuntu-latest
+    needs: [lint, unit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/setup-buildx-action@v3
+      - run: docker build --target runtime -t rag-guardrails:ci .
+
+  frontend:
+    name: Frontend Build & Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - run: npm ci
+        working-directory: frontend
+      - run: npm run type-check
+        working-directory: frontend
+      - run: npm test -- --run
+        working-directory: frontend
+      - run: npm run build
+        working-directory: frontend
